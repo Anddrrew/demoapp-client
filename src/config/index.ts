@@ -4,6 +4,7 @@ const auth0Fields = {
   domain: 'REACT_APP_AUTH0_DOMAIN',
   clientId: 'REACT_APP_AUTH0_CLIENT_ID',
   redirectUri: 'REACT_APP_AUTH0_CALLBACK_URL',
+  audience: 'REACT_APP_AUTH0_AUDIENCE',
 };
 
 const validate = (fields: configFields) => {

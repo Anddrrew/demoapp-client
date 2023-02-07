@@ -9,13 +9,14 @@ export const Auth0ProviderWithNavigate = () => {
     navigate(appState?.returnTo || window.location.pathname);
   };
 
-  const { domain, clientId, redirectUri } = config.auth0;
+  const { domain, clientId, redirectUri, audience } = config.auth0;
 
   return (
     <Auth0Provider
       domain={domain}
       clientId={clientId}
       authorizationParams={{
+        audience: audience,
         redirect_uri: redirectUri,
       }}
       onRedirectCallback={onRedirectCallback}
