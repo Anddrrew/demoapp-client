@@ -1,6 +1,7 @@
 import './App.css';
 import { CssBaseline, ThemeProvider, createTheme } from '@mui/material';
 import AppRouter from './router';
+import { SnackbarProvider } from 'notistack';
 
 const theme = createTheme({
   palette: {
@@ -12,7 +13,9 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <AppRouter />
+      <SnackbarProvider maxSnack={5}>
+        <AppRouter />
+      </SnackbarProvider>
     </ThemeProvider>
   );
 }

@@ -3,6 +3,9 @@ import { Outlet, RouterProvider, createBrowserRouter } from 'react-router-dom';
 import { Auth0ProviderWithNavigate } from '../providers/Auth0ProviderWithNavigate';
 import { Home, Profile } from '../pages';
 import { Box, CircularProgress } from '@mui/material';
+import { appPaths } from './paths';
+import { Summarization } from '../pages/services';
+import Layout from '../components/Layout';
 
 const AuthGuard = withAuthenticationRequired(() => <Outlet />, {
   onRedirecting: () => (
@@ -20,12 +23,21 @@ const router = createBrowserRouter([
         element: <AuthGuard />,
         children: [
           {
-            element: <Home />,
-            path: '/',
-          },
-          {
-            element: <Profile />,
-            path: '/profile',
+            element: <Layout />,
+            children: [
+              {
+                element: <Home />,
+                path: appPaths.INDEX,
+              },
+              {
+                element: <Profile />,
+                path: appPaths.PROFILE,
+              },
+              {
+                path: appPaths.SERVICE_SUMMARIZATION,
+                element: <Summarization />,
+              },
+            ],
           },
         ],
       },
