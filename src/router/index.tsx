@@ -1,7 +1,7 @@
 import { withAuthenticationRequired } from '@auth0/auth0-react';
 import { Outlet, RouterProvider, createBrowserRouter } from 'react-router-dom';
 import { Auth0ProviderWithNavigate } from '../providers/Auth0ProviderWithNavigate';
-import { Home, Profile } from '../pages';
+import { Home, NotFound, Profile } from '../pages';
 import { Box, CircularProgress } from '@mui/material';
 import { appPaths } from './paths';
 import { Summarization } from '../pages/services';
@@ -36,6 +36,10 @@ const router = createBrowserRouter([
               {
                 path: appPaths.SERVICE_SUMMARIZATION,
                 element: <Summarization />,
+              },
+              {
+                path: '*',
+                element: <NotFound />,
               },
             ],
           },
