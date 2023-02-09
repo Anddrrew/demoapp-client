@@ -1,5 +1,7 @@
 import { Box, Button, Card, CardActions, CardContent, CardHeader, TextField, Typography } from '@mui/material';
+import LoadingButton from '@mui/lab/LoadingButton';
 import { ChangeEvent } from 'react';
+import { useSnackbar } from 'notistack';
 
 const MAX_LENGTH = 3000;
 
@@ -12,7 +14,13 @@ type Props = {
 };
 
 export default function InputCard({ value, isLoading, onChange, onSubmit, onReset }: Props) {
+  const { enqueueSnackbar } = useSnackbar();
+
   const handleChange = (e: ChangeEvent<HTMLTextAreaElement>) => onChange(e.target.value);
+  const handleSubmit = () => {
+    if (value.length) onSubmit();
+    else enqueueSnackbar('Enter your text into form', { variant: 'warning' });
+  };
 
   return (
     <>
@@ -37,14 +45,15 @@ export default function InputCard({ value, isLoading, onChange, onSubmit, onRese
         </CardContent>
         <CardActions style={{ paddingTop: 0 }}>
           <Box mx={1} mb={1}>
-            <Button
+            <LoadingButton
               variant='outlined'
               sx={{ marginRight: 1 }}
-              onClick={onSubmit}
-              disabled={isLoading || value.length > MAX_LENGTH}
+              onClick={handleSubmit}
+              loading={isLoading}
+              disabled={value.length > MAX_LENGTH}
             >
               Get Summary
-            </Button>
+            </LoadingButton>
             <Button variant='outlined' color='error' onClick={onReset} disabled={isLoading}>
               Clear
             </Button>
