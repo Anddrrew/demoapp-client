@@ -1,14 +1,12 @@
-import { AppBar, Button, Container, Toolbar, Typography } from '@mui/material';
+import { Container } from '@mui/material';
 import { useAuth0 } from '@auth0/auth0-react';
-import AppLink from '../Link';
 import { Outlet } from 'react-router-dom';
 import { useEffect } from 'react';
 import ApiService from '../../service/ApiService';
+import ResponsiveAppBar from './AppBar';
 
 export default function Layout() {
-  const { logout, getAccessTokenSilently } = useAuth0();
-
-  const handleClick = () => logout();
+  const { getAccessTokenSilently } = useAuth0();
 
   useEffect(() => {
     getAccessTokenSilently().then(ApiService.setAccessToken);
@@ -16,18 +14,7 @@ export default function Layout() {
 
   return (
     <>
-      <AppBar position='sticky'>
-        <Toolbar>
-          <AppLink to='/' sx={{ flexGrow: 1 }}>
-            <Typography color='white' variant='h6'>
-              DemoApp
-            </Typography>
-          </AppLink>
-          <Button variant='outlined' color='inherit' disableElevation onClick={handleClick}>
-            Log out
-          </Button>
-        </Toolbar>
-      </AppBar>
+      <ResponsiveAppBar />
       <Container sx={{ marginY: 2 }}>
         <Outlet />
       </Container>
