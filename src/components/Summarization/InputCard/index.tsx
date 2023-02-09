@@ -1,34 +1,16 @@
 import { Box, Button, Card, CardActions, CardContent, CardHeader, TextField } from '@mui/material';
-import { ChangeEvent, useEffect, useState } from 'react';
-import useSWRMutation from 'swr/mutation';
-import SummarizationService from '../../../service/SummarizationService';
-import { useSnackbar } from 'notistack';
+import { ChangeEvent } from 'react';
 
 type Props = {
-  onSuccess: (data: object) => void;
+  value: string;
+  isLoading: boolean;
+  onChange: (value: string) => void;
+  onSubmit: () => void;
+  onReset: () => void;
 };
 
-const fetcher = (url: string, { arg }: { arg: string }) => SummarizationService.getSummary(arg);
-
-export default function InputCard({ onSuccess }: Props) {
-  const [value, setValue] = useState('');
-  const { enqueueSnackbar } = useSnackbar();
-  const { trigger, data, error, isMutating, reset } = useSWRMutation('/summarization', fetcher);
-
-  const handleSubmit = () => trigger(value);
-  const handleChange = (e: ChangeEvent<HTMLTextAreaElement>) => setValue(e.target.value);
-  const handleReset = () => {
-    reset();
-    setValue('');
-  };
-
-  useEffect(() => {
-    if (data) onSuccess(data);
-  }, [data]);
-
-  useEffect(() => {
-    if (error) enqueueSnackbar(error.message, { variant: 'error' });
-  }, [error]);
+export default function InputCard({ value, isLoading, onChange, onSubmit, onReset }: Props) {
+  const handleChange = (e: ChangeEvent<HTMLTextAreaElement>) => onChange(e.target.value);
 
   return (
     <>
@@ -40,7 +22,7 @@ export default function InputCard({ onSuccess }: Props) {
             onChange={handleChange}
             fullWidth
             placeholder='Enter text...'
-            disabled={isMutating}
+            disabled={isLoading}
             multiline
             sx={{
               height: '100%',
@@ -53,10 +35,10 @@ export default function InputCard({ onSuccess }: Props) {
         </CardContent>
         <CardActions style={{ paddingTop: 0 }}>
           <Box mx={1} mb={1}>
-            <Button variant='outlined' sx={{ marginRight: 1 }} onClick={handleSubmit} disabled={isMutating}>
+            <Button variant='outlined' sx={{ marginRight: 1 }} onClick={onSubmit} disabled={isLoading}>
               Get Summary
             </Button>
-            <Button variant='outlined' color='error' onClick={handleReset} disabled={isMutating}>
+            <Button variant='outlined' color='error' onClick={onReset} disabled={isLoading}>
               Clear
             </Button>
           </Box>

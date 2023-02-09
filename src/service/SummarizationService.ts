@@ -1,7 +1,8 @@
+import { SummarizationInput } from '../types/summarization';
 import ApiService from './ApiService';
 
 class SummarizationService {
-  getSummary = (text: string) => ApiService.fetch('/summarization', 'POST', { text });
+  getSummary = (input: SummarizationInput) => ApiService.fetch('/summarization', 'POST', input);
 }
 
 export default new SummarizationService();

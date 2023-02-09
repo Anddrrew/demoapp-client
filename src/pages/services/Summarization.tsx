@@ -1,22 +1,66 @@
 import { Grid } from '@mui/material';
-import InputCard from '../../components/Summarization/InputCard';
-import OutputCard from '../../components/Summarization/OutputCard';
-import { useState } from 'react';
-import SettingsCard from '../../components/Summarization/SettingsCard';
+import { useEffect, useState } from 'react';
+import useSWRMutation from 'swr/mutation';
+import { useSnackbar } from 'notistack';
+import SummarizationService from '../../service/SummarizationService';
+import { InputCard, OutputCard, SettingsCard } from '../../components/Summarization';
+import { SummarizationInput, SummarizationOutput } from '../../types/summarization';
+
+const fetcher = (url: string, { arg }: { arg: SummarizationInput }) => SummarizationService.getSummary(arg);
+
+const defaultSettings = {
+  maxTokens: 60,
+  temperature: 0.7,
+  topP: 1.0,
+  frequencyPenalty: 0.0,
+  presencePenalty: 1,
+};
 
 export default function Summarization() {
-  const [text, setText] = useState('');
+  const [input, setInput] = useState('');
+  const [settings, setSettings] = useState(defaultSettings);
+  const [output, setOutput] = useState('');
+  const { enqueueSnackbar } = useSnackbar();
+  const { trigger, data, error, isMutating, reset } = useSWRMutation<SummarizationOutput, Error>(
+    'summarization',
+    fetcher
+  );
+
+  const handleSubmit = () =>
+    trigger({
+      text: input,
+      ...settings,
+    });
+
+  const handleReset = () => {
+    reset();
+    setInput('');
+  };
+
+  useEffect(() => {
+    if (data) setOutput(data.summary);
+  }, [data]);
+
+  useEffect(() => {
+    if (error) enqueueSnackbar(error.message, { variant: 'error' });
+  }, [error]);
 
   return (
     <Grid container spacing={2} mt={0}>
       <Grid item xs={12} sm={8}>
-        <InputCard onSuccess={(data) => setText(JSON.stringify(data, null, 2))} />
+        <InputCard
+          value={input}
+          isLoading={isMutating}
+          onChange={setInput}
+          onSubmit={handleSubmit}
+          onReset={handleReset}
+        />
       </Grid>
       <Grid item xs={12} sm={4}>
-        <SettingsCard />
+        <SettingsCard values={settings} defaultValues={defaultSettings} setValues={setSettings} />
       </Grid>
       <Grid item xs={12} sm={8}>
-        <OutputCard title='Summary' placeholder='Your result will be here' text={text} />
+        <OutputCard title='Summary' placeholder='Your result will be here' text={output} />
       </Grid>
     </Grid>
   );

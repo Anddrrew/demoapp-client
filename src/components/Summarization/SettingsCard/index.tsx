@@ -1,18 +1,14 @@
 import { Button, Card, CardContent, CardHeader, Stack } from '@mui/material';
-import { useState } from 'react';
 import SettingSlider from './SettingSlider';
+import { SettingsSummarization } from '../../../types/summarization';
 
-const defaultValues = {
-  maxTokens: 60,
-  temperature: 0.7,
-  topP: 1.0,
-  frequencyPenalty: 0.0,
-  presencePenalty: 1,
+type Props = {
+  values: SettingsSummarization;
+  defaultValues: SettingsSummarization;
+  setValues: React.Dispatch<React.SetStateAction<SettingsSummarization>>;
 };
 
-export default function SettingsCard() {
-  const [values, setValues] = useState(defaultValues);
-
+export default function SettingsCard({ values, defaultValues, setValues }: Props) {
   const handleChange = (name: keyof typeof values, value: number) => {
     setValues((values) => ({
       ...values,
