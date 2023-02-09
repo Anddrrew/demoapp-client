@@ -46,8 +46,8 @@ export default function Summarization() {
   }, [error]);
 
   return (
-    <Grid container spacing={2} mx={0}>
-      <Grid item xs={12} sm={8}>
+    <Grid container spacing={2}>
+      <Grid item xs={12} md={8}>
         <InputCard
           value={input}
           isLoading={isMutating}
@@ -56,10 +56,10 @@ export default function Summarization() {
           onReset={handleReset}
         />
       </Grid>
-      <Grid item xs={12} sm={4}>
+      <Grid item xs={12} md={4}>
         <SettingsCard values={settings} defaultValues={defaultSettings} setValues={setSettings} />
       </Grid>
-      <Grid item xs={12} sm={8}>
+      <Grid item xs={12} md={8}>
         <OutputCard title='Summary' placeholder='Your result will be here' text={output} />
       </Grid>
     </Grid>
