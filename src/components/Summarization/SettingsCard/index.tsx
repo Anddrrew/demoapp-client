@@ -26,7 +26,7 @@ export default function SettingsCard({ values, defaultValues, setValues }: Props
           <SettingSlider
             name={'Max length'}
             value={values.maxTokens}
-            max={2000}
+            max={990}
             onChange={(v) => handleChange('maxTokens', v)}
           />
           <SettingSlider

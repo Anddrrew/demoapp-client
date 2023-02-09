@@ -28,7 +28,7 @@ export default function Layout() {
           </Button>
         </Toolbar>
       </AppBar>
-      <Container>
+      <Container sx={{ marginY: 2 }}>
         <Outlet />
       </Container>
     </>

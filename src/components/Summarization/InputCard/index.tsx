@@ -1,5 +1,7 @@
-import { Box, Button, Card, CardActions, CardContent, CardHeader, TextField } from '@mui/material';
+import { Box, Button, Card, CardActions, CardContent, CardHeader, TextField, Typography } from '@mui/material';
 import { ChangeEvent } from 'react';
+
+const MAX_LENGTH = 3000;
 
 type Props = {
   value: string;
@@ -35,13 +37,21 @@ export default function InputCard({ value, isLoading, onChange, onSubmit, onRese
         </CardContent>
         <CardActions style={{ paddingTop: 0 }}>
           <Box mx={1} mb={1}>
-            <Button variant='outlined' sx={{ marginRight: 1 }} onClick={onSubmit} disabled={isLoading}>
+            <Button
+              variant='outlined'
+              sx={{ marginRight: 1 }}
+              onClick={onSubmit}
+              disabled={isLoading || value.length > MAX_LENGTH}
+            >
               Get Summary
             </Button>
             <Button variant='outlined' color='error' onClick={onReset} disabled={isLoading}>
               Clear
             </Button>
           </Box>
+          <Typography ml='auto' mr={1} color={value.length > MAX_LENGTH ? 'red' : ''}>
+            {value.length}/{MAX_LENGTH}
+          </Typography>
         </CardActions>
       </Card>
     </>

@@ -46,7 +46,7 @@ export default function Summarization() {
   }, [error]);
 
   return (
-    <Grid container spacing={2} mt={0}>
+    <Grid container spacing={2} mx={0}>
       <Grid item xs={12} sm={8}>
         <InputCard
           value={input}
