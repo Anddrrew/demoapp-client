@@ -4,9 +4,13 @@ import useSWRMutation from 'swr/mutation';
 import SummarizationService from '../../../service/SummarizationService';
 import { useSnackbar } from 'notistack';
 
+type Props = {
+  onSuccess: (data: object) => void;
+};
+
 const fetcher = (url: string, { arg }: { arg: string }) => SummarizationService.getSummary(arg);
 
-export default function InputCard() {
+export default function InputCard({ onSuccess }: Props) {
   const [value, setValue] = useState('');
   const { enqueueSnackbar } = useSnackbar();
   const { trigger, data, error, isMutating, reset } = useSWRMutation('/summarization', fetcher);
@@ -19,9 +23,11 @@ export default function InputCard() {
   };
 
   useEffect(() => {
-    if (error) {
-      enqueueSnackbar(error.message, { variant: 'error' });
-    }
+    if (data) onSuccess(data);
+  }, [data]);
+
+  useEffect(() => {
+    if (error) enqueueSnackbar(error.message, { variant: 'error' });
   }, [error]);
 
   return (
@@ -37,13 +43,6 @@ export default function InputCard() {
             disabled={isMutating}
           />
         </CardContent>
-        {data ? (
-          <CardContent>
-            <code>DATA: {JSON.stringify(data, null, 2)}</code>
-          </CardContent>
-        ) : (
-          <></>
-        )}
         <CardActions style={{ paddingTop: 0 }}>
           <Box mx={1} mb={1}>
             <Button variant='outlined' sx={{ marginRight: 1 }} onClick={handleSubmit} disabled={isMutating}>
