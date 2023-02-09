@@ -32,15 +32,23 @@ export default function InputCard({ onSuccess }: Props) {
 
   return (
     <>
-      <Card variant='outlined'>
+      <Card variant='outlined' sx={{ height: '100%', display: 'flex', flexFlow: 'column nowrap' }}>
         <CardHeader title='Summarization' subheader='Enter your text below and we will give you a summary' />
-        <CardContent style={{ paddingTop: 0 }}>
+        <CardContent sx={{ paddingTop: 0, flex: '1 1 auto' }}>
           <TextField
             value={value}
             onChange={handleChange}
             fullWidth
             placeholder='Enter text...'
             disabled={isMutating}
+            multiline
+            sx={{
+              height: '100%',
+              '& .MuiInputBase-root': {
+                alignItems: 'baseline',
+                height: '100%',
+              },
+            }}
           />
         </CardContent>
         <CardActions style={{ paddingTop: 0 }}>
